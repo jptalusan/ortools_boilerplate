@@ -12,7 +12,25 @@ Simply install using `pip`. Current version is `ortools==9.14.6206`
 pip install ortools~=9.14
 ```
 ## C++
-I couldn't get the binary install to work. The `make test` was failing because of some unsigned issues.
+On Mac, I couldn't get the binary install to work. The `make test` was failing because of some unsigned issues. It probably works.  
+On Linux (Ubuntu 24.04), i just extracted the binary tar and added it to my CMAKE_PREFIX_PATH. Interestingly, it is v9.12 only.
+
+```CMake
+cmake_minimum_required(VERSION 3.16)
+project(my_program LANGUAGES CXX)
+
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+# Point CMake to where the OR-Tools package config is
+list(APPEND CMAKE_PREFIX_PATH "/home/jptalusan/Downloads/or-tools_x86_64_Ubuntu-24.04_cpp_v9.12.4544")
+
+# OR-Tools provides a proper CMake package
+find_package(ortools REQUIRED CONFIG)
+
+add_executable(my_program program.cc)
+target_link_libraries(my_program PRIVATE ortools::ortools)
+```
 
 ### Brew
 I have a Mac Pro M3 15.6. I currently use Python 3.12 and brew or-tools version 9.14.
